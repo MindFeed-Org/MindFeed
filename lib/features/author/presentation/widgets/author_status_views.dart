@@ -67,42 +67,44 @@ class AuthorLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: true,
-      effect: EditorialShimmer.darkEffect,
-      child: IgnorePointer(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Published Stories',
-                    style: TextStyle(
-                      color: AppColors.softCream,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.6,
+    return RepaintBoundary(
+      child: Skeletonizer(
+        enabled: true,
+        effect: EditorialShimmer.darkEffect,
+        child: IgnorePointer(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Published Stories',
+                      style: TextStyle(
+                        color: AppColors.softCream,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.6,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '3 stories',
-                    style: TextStyle(
-                      color: AppColors.greyText,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
+                    Text(
+                      '3 stories',
+                      style: TextStyle(
+                        color: AppColors.greyText,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ..._placeholderArticles.map(
-                (item) => ArticleCardOfAuthor(item: item),
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ..._placeholderArticles.map(
+                  (item) => ArticleCardOfAuthor(item: item),
+                ),
+              ],
+            ),
           ),
         ),
       ),

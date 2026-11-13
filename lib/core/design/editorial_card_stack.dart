@@ -181,6 +181,7 @@ class _EditorialCardStackState extends State<EditorialCardStack> with SingleTick
     child: RepaintBoundary(
       child: EditorialCard(
         item: _cards[i],
+        expandCover: true,
         backgroundColor: Color.lerp(AppColors.ink, _cards[i].color, op),
         showActions: false,
         onOpen: () => widget.onOpenArticle(_cards[i]),
@@ -223,6 +224,7 @@ class _EditorialCardStackState extends State<EditorialCardStack> with SingleTick
                       children: [
                         EditorialCard(
                           item: _cards.first,
+                          expandCover: true,
                           onOpen: () => widget.onOpenArticle(_cards.first),
                           onLike: _handleLikeTap,
                           onSave: _handleSaveTap,

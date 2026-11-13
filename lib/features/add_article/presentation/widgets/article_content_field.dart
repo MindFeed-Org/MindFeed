@@ -12,44 +12,51 @@ class ArticleContentField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddArticleCubit, AddArticleState>(
-      buildWhen: (previous, current) =>
-          previous.content != current.content ||
-          previous.formErrors.contentError != current.formErrors.contentError,
-      builder: (context, state) {
-        final contentWordCount = state.contentWordCount;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ArticleSectionHeader(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BlocBuilder<AddArticleCubit, AddArticleState>(
+          buildWhen: (previous, current) => previous.content != current.content,
+          builder: (context, state) {
+            final contentWordCount = state.contentWordCount;
+            return ArticleSectionHeader(
               title: 'Story Content (Markdown)',
               counter: '$contentWordCount / 300 words min',
               isCounterError: contentWordCount < 300,
               isCounterSuccess: contentWordCount >= 300,
-            ),
-            const SizedBox(height: 6),
-            TextField(
-              key: const Key('article_content_field'),
-              controller: controller,
-              onChanged: (val) =>
-                  context.read<AddArticleCubit>().onContentChanged(val),
-              minLines: 12,
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
-              style: const TextStyle(
-                fontSize: 15,
-                height: 1.5,
-                color: AppColors.ink,
-              ),
-              decoration: articleInputDecoration(
-                hintText:
-                    'Write your story here in Markdown format (at least 300 words)...',
-                errorText: state.formErrors.contentError,
-              ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+        const SizedBox(height: 6),
+        RepaintBoundary(
+          child: BlocBuilder<AddArticleCubit, AddArticleState>(
+            buildWhen: (previous, current) =>
+                previous.formErrors.contentError !=
+                current.formErrors.contentError,
+            builder: (context, state) {
+              return TextField(
+                key: const Key('article_content_field'),
+                controller: controller,
+                onChanged: (val) =>
+                    context.read<AddArticleCubit>().onContentChanged(val),
+                minLines: 12,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                style: const TextStyle(
+                  fontSize: 15,
+                  height: 1.5,
+                  color: AppColors.ink,
+                ),
+                decoration: articleInputDecoration(
+                  hintText:
+                      'Write your story here in Markdown format (at least 300 words)...',
+                  errorText: state.formErrors.contentError,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

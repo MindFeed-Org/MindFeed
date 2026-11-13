@@ -106,10 +106,12 @@ class ArticleReaderMarkdownBody extends StatelessWidget {
           ),
           const SizedBox(height: 20),
         ],
-        MarkdownBody(
-          data: markdownData.isNotEmpty ? markdownData : title,
-          selectable: false,
-          styleSheet: styleSheet,
+        RepaintBoundary(
+          child: MarkdownBody(
+            data: markdownData.isNotEmpty ? markdownData : title,
+            selectable: false,
+            styleSheet: styleSheet,
+          ),
         ),
       ],
     );

@@ -58,22 +58,24 @@ class SearchLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: true,
-      effect: EditorialShimmer.paperEffect,
-      child: IgnorePointer(
-        child: Column(
-          children: _placeholderResults
-              .map(
-                (item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: EditorialCard(
-                    item: item,
-                    showActions: false,
+    return RepaintBoundary(
+      child: Skeletonizer(
+        enabled: true,
+        effect: EditorialShimmer.paperEffect,
+        child: IgnorePointer(
+          child: Column(
+            children: _placeholderResults
+                .map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: EditorialCard(
+                      item: item,
+                      showActions: false,
+                    ),
                   ),
-                ),
-              )
-              .toList(),
+                )
+                .toList(),
+          ),
         ),
       ),
     );
@@ -197,12 +199,14 @@ class SearchResultsList extends StatelessWidget {
           .map(
             (item) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: EditorialCard(
-                item: item,
-                onOpen: () => Navigator.pushNamed(
-                  context,
-                  AppRoutes.article,
-                  arguments: item,
+              child: RepaintBoundary(
+                child: EditorialCard(
+                  item: item,
+                  onOpen: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.article,
+                    arguments: item,
+                  ),
                 ),
               ),
             ),

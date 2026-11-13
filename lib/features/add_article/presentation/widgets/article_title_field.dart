@@ -12,41 +12,48 @@ class ArticleTitleField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddArticleCubit, AddArticleState>(
-      buildWhen: (previous, current) =>
-          previous.title != current.title ||
-          previous.formErrors.titleError != current.formErrors.titleError,
-      builder: (context, state) {
-        final titleWordCount = state.titleWordCount;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ArticleSectionHeader(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BlocBuilder<AddArticleCubit, AddArticleState>(
+          buildWhen: (previous, current) => previous.title != current.title,
+          builder: (context, state) {
+            final titleWordCount = state.titleWordCount;
+            return ArticleSectionHeader(
               title: 'Story Title',
               counter: '$titleWordCount / 12 words',
               isCounterError: titleWordCount > 12,
-            ),
-            const SizedBox(height: 6),
-            TextField(
-              key: const Key('article_title_field'),
-              controller: controller,
-              onChanged: (val) =>
-                  context.read<AddArticleCubit>().onTitleChanged(val),
-              maxLines: 2,
-              minLines: 1,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: AppColors.ink,
-              ),
-              decoration: articleInputDecoration(
-                hintText: 'Enter an editorial headline (1..12 words)...',
-                errorText: state.formErrors.titleError,
-              ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+        const SizedBox(height: 6),
+        RepaintBoundary(
+          child: BlocBuilder<AddArticleCubit, AddArticleState>(
+            buildWhen: (previous, current) =>
+                previous.formErrors.titleError !=
+                current.formErrors.titleError,
+            builder: (context, state) {
+              return TextField(
+                key: const Key('article_title_field'),
+                controller: controller,
+                onChanged: (val) =>
+                    context.read<AddArticleCubit>().onTitleChanged(val),
+                maxLines: 2,
+                minLines: 1,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.ink,
+                ),
+                decoration: articleInputDecoration(
+                  hintText: 'Enter an editorial headline (1..12 words)...',
+                  errorText: state.formErrors.titleError,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

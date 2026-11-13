@@ -126,9 +126,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/views/add_article.dart": {
-    "mtime": 1794575669.1068513,
-    "seen": 1794575915.1231058,
-    "ast_hash": "7bc3bb81e1fc03d85c1e2f3dcfce66fa",
+    "mtime": 1794589957.684282,
+    "seen": 1794590154.8255413,
+    "ast_hash": "002191567464cadc78b7326b4b3a9ced",
     "semantic_hash": ""
   },
   "lib/features/auth/data/datasources/auth_api_source.dart": {
@@ -468,8 +468,8 @@
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/views/profile_view.dart": {
-    "mtime": 1794586707.926546,
-    "seen": 1794586788.9587145,
+    "mtime": 1794586988.849979,
+    "seen": 1794590154.933397,
     "ast_hash": "6b209833c76bfa3f5fa20f698668f67c",
     "semantic_hash": ""
   },
@@ -480,9 +480,9 @@
     "semantic_hash": ""
   },
   "lib/features/search/presentation/views/search_view.dart": {
-    "mtime": 1793795175.9755578,
-    "seen": 1793795638.72225,
-    "ast_hash": "447d21a6d123df2aad4eb39fbc6b0559",
+    "mtime": 1794590021.730254,
+    "seen": 1794590154.943507,
+    "ast_hash": "0dc0d1c98abdf7c5705306bb8b8cbfb7",
     "semantic_hash": ""
   },
   "lib/features/search/presentation/widgets/aricles_by_categories.dart": {
@@ -618,15 +618,15 @@
     "semantic_hash": "25f64567ba0653fd85928094bf4a822a"
   },
   "lib/core/design/editorial_card.dart": {
-    "mtime": 1794576034.5211701,
-    "seen": 1794576124.0883765,
-    "ast_hash": "1f6ada3b690374edb97c1ceec4690ba4",
+    "mtime": 1794590040.4492867,
+    "seen": 1794590154.8028383,
+    "ast_hash": "cfa3a9946358249356575dbe185209cf",
     "semantic_hash": ""
   },
   "lib/core/design/editorial_card_stack.dart": {
-    "mtime": 1793795542.456124,
-    "seen": 1793795638.6681364,
-    "ast_hash": "1bafde56fcfa26de2b74ca83ab9bb07d",
+    "mtime": 1794590043.167756,
+    "seen": 1794590154.8028414,
+    "ast_hash": "440d335fe49a07940465135f1cf434b1",
     "semantic_hash": ""
   },
   "lib/core/design/editorial_models.dart": {
@@ -1068,9 +1068,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/domain/helpers/article_validator.dart": {
-    "mtime": 1793795175.9202406,
-    "seen": 1793795638.674932,
-    "ast_hash": "61993604a81bb812ae39c27cc4e0366a",
+    "mtime": 1794589935.4746463,
+    "seen": 1794590154.81907,
+    "ast_hash": "7bf105fc982a532bfb6eb734b2595540",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/controllers/drafts_cubit/drafts_cubit.dart": {
@@ -1230,9 +1230,9 @@
     "semantic_hash": ""
   },
   "lib/features/search/presentation/widgets/search_results_view.dart": {
-    "mtime": 1793795175.9773898,
-    "seen": 1793795638.7231622,
-    "ast_hash": "a6c3ecd131a8ff587c9db9d319d8c75c",
+    "mtime": 1794589998.1986508,
+    "seen": 1794590154.945497,
+    "ast_hash": "f252a69ad7cd74b1261c289ac235eb50",
     "semantic_hash": ""
   },
   "lib/features/settings/presentation/widgets/settings_account_card.dart": {
@@ -1326,9 +1326,9 @@
     "semantic_hash": ""
   },
   "lib/features/home/presentation/widgets/home_feed_loading_views.dart": {
-    "mtime": 1793795175.9568083,
-    "seen": 1793795638.713377,
-    "ast_hash": "ff4eca37aded6310f4fa7a9dac10eb81",
+    "mtime": 1794589948.737185,
+    "seen": 1794590154.9113,
+    "ast_hash": "c3bc3ab528bdd08bf2986d7431d8ff23",
     "semantic_hash": ""
   },
   "lib/features/home/presentation/widgets/home_lead_story_section.dart": {
@@ -1542,15 +1542,15 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_content_field.dart": {
-    "mtime": 1793795131.0782096,
-    "seen": 1793795638.676765,
-    "ast_hash": "41b10482cca633804e32bb1b31a3975a",
+    "mtime": 1794589960.0678985,
+    "seen": 1794590154.8288605,
+    "ast_hash": "59d8d7fd117c5f64f43e4b04fbd2b409",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_cover_image_field.dart": {
-    "mtime": 1793795175.9243834,
-    "seen": 1793795638.6767669,
-    "ast_hash": "56839ecfe064477b55f1715c3e23e6ca",
+    "mtime": 1794589937.0353951,
+    "seen": 1794590154.8288622,
+    "ast_hash": "ba055666ec4bdf057d7793aa67f625ba",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_edit_warning_banner.dart": {
@@ -1560,9 +1560,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_editor_action_bar.dart": {
-    "mtime": 1794586632.7750812,
-    "seen": 1794586788.8439014,
-    "ast_hash": "c13b72623c639a8a9fdff72581c8359f",
+    "mtime": 1794589961.0935166,
+    "seen": 1794590154.8295217,
+    "ast_hash": "a7111816d499c146baa1db0db4a3dcd6",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_field_helpers.dart": {
@@ -1572,9 +1572,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_preview_header.dart": {
-    "mtime": 1793795175.9253047,
-    "seen": 1793795638.6767864,
-    "ast_hash": "fe2c5ab448912e881b03ddb0e8536924",
+    "mtime": 1794589938.6038747,
+    "seen": 1794590154.8308544,
+    "ast_hash": "d4f58af92a5bcc641d78abc1625ad45f",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_tag_selector.dart": {
@@ -1584,9 +1584,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_title_field.dart": {
-    "mtime": 1793795131.0814285,
-    "seen": 1793795638.6767924,
-    "ast_hash": "c426ed9fb97b26003762b541c55088a4",
+    "mtime": 1794589958.7358296,
+    "seen": 1794590154.8315196,
+    "ast_hash": "b38d6662536c474c0652780b567693ea",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/device_preference_notifier.dart": {
@@ -1746,9 +1746,9 @@
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/widgets/profile_app_bar.dart": {
-    "mtime": 1794586141.5301785,
-    "seen": 1794586788.9617946,
-    "ast_hash": "bfaf05276e19745ed16c1885d8819653",
+    "mtime": 1794587071.1540394,
+    "seen": 1794590154.9360259,
+    "ast_hash": "46527d4d1e31dab70d20f7de4c8e959a",
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/widgets/profile_articles_status_views.dart": {
@@ -1770,9 +1770,9 @@
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/widgets/user_articles.dart": {
-    "mtime": 1793795614.0915675,
-    "seen": 1793795638.722226,
-    "ast_hash": "398bfd28f58b53fda985edeedd984e8f",
+    "mtime": 1794589999.4155488,
+    "seen": 1794590154.9379923,
+    "ast_hash": "9fd89a40a64c72f0fbdf5a11e48db655",
     "semantic_hash": ""
   },
   "lib/features/search/domain/usecases/get_articles_by_category_use_case.dart": {
@@ -2160,9 +2160,9 @@
     "semantic_hash": ""
   },
   "lib/features/article/presentation/widgets/article_reader_markdown_body.dart": {
-    "mtime": 1793795175.9337368,
-    "seen": 1793795638.6768508,
-    "ast_hash": "79a9b816aac8c330391ba733b3ded7e0",
+    "mtime": 1794589962.4064333,
+    "seen": 1794590154.847305,
+    "ast_hash": "8d493d86542d67ac037b8ed7c67ddf56",
     "semantic_hash": ""
   },
   "lib/features/article/presentation/widgets/article_reader_metadata_header.dart": {
@@ -2424,9 +2424,9 @@
     "semantic_hash": ""
   },
   "lib/features/author/presentation/widgets/author_status_views.dart": {
-    "mtime": 1793795175.9475331,
-    "seen": 1793795638.711847,
-    "ast_hash": "b7c124b659db16dcd7e8b0e21e44ee45",
+    "mtime": 1794589942.0479002,
+    "seen": 1794590154.8949287,
+    "ast_hash": "bd2f6e2518ccb9789c09bf7e600751d4",
     "semantic_hash": ""
   },
   "lib/features/author/presentation/widgets/author_topic_filter_bar.dart": {
@@ -2646,9 +2646,9 @@
     "semantic_hash": ""
   },
   "lib/core/widgets/editorial_cover_image.dart": {
-    "mtime": 1794575133.4380243,
-    "seen": 1794575343.3933926,
-    "ast_hash": "cd035a2e14a1ed7b47ceec8469f3154a",
+    "mtime": 1794589934.560317,
+    "seen": 1794590154.8162522,
+    "ast_hash": "abcea3d34d6c9004ad71dcd28ef41c45",
     "semantic_hash": ""
   },
   "test/features/home/home_article_card_cover_image_test.dart": {

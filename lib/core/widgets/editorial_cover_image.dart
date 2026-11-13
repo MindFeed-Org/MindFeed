@@ -19,7 +19,7 @@ class EditorialCoverImage extends StatelessWidget {
     this.width = double.infinity,
     required this.height,
     this.borderRadius = AppBorders.xxs,
-    this.cacheWidth = 1080,
+    this.cacheWidth = 720,
     this.cacheHeight,
     this.placeholderBackgroundColor = AppColors.blackAlpha12,
     this.placeholderIconColor = AppColors.mutedInk,

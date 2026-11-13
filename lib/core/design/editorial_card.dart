@@ -19,6 +19,7 @@ class EditorialCard extends StatelessWidget {
     this.onSave,
     this.showActions = true,
     this.backgroundColor,
+    this.expandCover = false,
   });
 
   final EditorialNewsItem item;
@@ -27,105 +28,100 @@ class EditorialCard extends StatelessWidget {
   final VoidCallback? onSave;
   final bool showActions;
   final Color? backgroundColor;
+  final bool expandCover;
 
   @override
   Widget build(BuildContext context) {
     final isSkeleton = Skeletonizer.maybeOf(context)?.enabled ?? false;
+    final hasCover = EditorialCoverImage.hasValidCover(
+      coverImageUrl: item.coverImageUrl,
+      coverImageBytes: item.coverImageBytes,
+    );
     return Semantics(
       button: !isSkeleton,
       label: 'Read ${item.title.replaceAll('\n', ' ')}',
       child: InkWell(
         onTap: isSkeleton ? null : onOpen,
         borderRadius: AppBorders.card,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final hasCover = EditorialCoverImage.hasValidCover(
-              coverImageUrl: item.coverImageUrl,
-              coverImageBytes: item.coverImageBytes,
-            );
-            return Container(
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
-              decoration: BoxDecoration(
-                color: backgroundColor ?? item.color,
-                borderRadius: AppBorders.card,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 16,
-                    offset: Offset(0, 6),
-                  ),
-                ],
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+          decoration: BoxDecoration(
+            color: backgroundColor ?? item.color,
+            borderRadius: AppBorders.card,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 16,
+                offset: Offset(0, 6),
               ),
-              child: Column(
-                mainAxisSize: constraints.hasBoundedHeight
-                    ? MainAxisSize.max
-                    : MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeaderBadges(),
-                  const SizedBox(height: 12),
-                  Text(
-                    item.title,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      height: 1.15,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.9,
-                      color: AppColors.ink,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.updated,
-                    style: const TextStyle(
-                      color: AppColors.mutedInk,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  _buildAuthorRow(),
-                  if (hasCover) ...[
-                    const SizedBox(height: 14),
-                    if (constraints.hasBoundedHeight)
-                      Expanded(
-                        child: EditorialCoverImage(
-                          coverImageUrl: item.coverImageUrl,
-                          coverImageBytes: item.coverImageBytes,
-                          height: double.infinity,
-                        ),
-                      )
-                    else
-                      EditorialCoverImage(
-                        coverImageUrl: item.coverImageUrl,
-                        coverImageBytes: item.coverImageBytes,
-                        height: 220,
-                      ),
-                  ] else if (isSkeleton) ...[
-                    const SizedBox(height: 14),
-                    if (constraints.hasBoundedHeight)
-                      Expanded(
-                        child: _buildSkeletonCoverBox(height: double.infinity),
-                      )
-                    else
-                      _buildSkeletonCoverBox(height: 220),
-                  ] else if (constraints.hasBoundedHeight) ...[
-                    const Spacer(),
-                  ],
-                  if (showActions) ...[
-                    const SizedBox(height: 8),
-                    _buildActionsRow(),
-                  ] else if (constraints.hasBoundedHeight) ...[
-                    // Reserve action-row height on stacked background cards so
-                    // the cover image does not shrink when promoted to front.
-                    const SizedBox(height: 56),
-                  ],
-                ],
+            ],
+          ),
+          child: Column(
+            mainAxisSize: expandCover ? MainAxisSize.max : MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeaderBadges(),
+              const SizedBox(height: 12),
+              Text(
+                item.title,
+                style: const TextStyle(
+                  fontSize: 26,
+                  height: 1.15,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.9,
+                  color: AppColors.ink,
+                ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
-            );
-          },
+              const SizedBox(height: 8),
+              Text(
+                item.updated,
+                style: const TextStyle(
+                  color: AppColors.mutedInk,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildAuthorRow(),
+              if (hasCover) ...[
+                const SizedBox(height: 14),
+                if (expandCover)
+                  Expanded(
+                    child: EditorialCoverImage(
+                      coverImageUrl: item.coverImageUrl,
+                      coverImageBytes: item.coverImageBytes,
+                      height: double.infinity,
+                    ),
+                  )
+                else
+                  EditorialCoverImage(
+                    coverImageUrl: item.coverImageUrl,
+                    coverImageBytes: item.coverImageBytes,
+                    height: 220,
+                  ),
+              ] else if (isSkeleton) ...[
+                const SizedBox(height: 14),
+                if (expandCover)
+                  Expanded(
+                    child: _buildSkeletonCoverBox(height: double.infinity),
+                  )
+                else
+                  _buildSkeletonCoverBox(height: 220),
+              ] else if (expandCover) ...[
+                const Spacer(),
+              ],
+              if (showActions) ...[
+                const SizedBox(height: 8),
+                _buildActionsRow(),
+              ] else if (expandCover) ...[
+                // Reserve action-row height on stacked background cards so
+                // the cover image does not shrink when promoted to front.
+                const SizedBox(height: 56),
+              ],
+            ],
+          ),
         ),
       ),
     );

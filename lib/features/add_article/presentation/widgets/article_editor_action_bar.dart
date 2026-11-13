@@ -17,107 +17,107 @@ class ArticleEditorActionBar extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.isSavingDraft != current.isSavingDraft ||
           previous.isPublishing != current.isPublishing ||
-          previous.isEditingPublished != current.isEditingPublished ||
-          previous.title != current.title ||
-          previous.content != current.content ||
-          previous.coverImageUrl != current.coverImageUrl ||
-          previous.selectedTags != current.selectedTags ||
-          previous.editingItemId != current.editingItemId,
+          previous.isEditingPublished != current.isEditingPublished,
       builder: (context, state) {
         final isBusy = state.isSavingDraft || state.isPublishing;
 
-        return Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: OutlinedButton(
-                key: const Key('save_draft_button'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.ink,
-                  side: const BorderSide(color: AppColors.ink, width: 1.5),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+        return RepaintBoundary(
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: OutlinedButton(
+                  key: const Key('save_draft_button'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.ink,
+                    side: const BorderSide(color: AppColors.ink, width: 1.5),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
-                ),
-                onPressed: isBusy
-                    ? null
-                    : () => context.read<AddArticleCubit>().saveDraft(),
-                child: state.isSavingDraft
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: AppColors.ink,
+                  onPressed: isBusy
+                      ? null
+                      : () => context.read<AddArticleCubit>().saveDraft(),
+                  child: state.isSavingDraft
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.ink,
+                          ),
+                        )
+                      : const Text(
+                          'Save Draft',
+                          style: TextStyle(fontWeight: FontWeight.w800),
                         ),
-                      )
-                    : const Text(
-                        'Save Draft',
-                        style: TextStyle(fontWeight: FontWeight.w800),
-                      ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 2,
-              child: OutlinedButton(
-                key: const Key('preview_button'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.ink,
-                  side: const BorderSide(
-                    color: AppColors.creamBorder,
-                    width: 1.5,
-                  ),
-                  backgroundColor: AppColors.cream,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                onPressed: () => _openPreview(context, state),
-                child: const Text(
-                  'Preview',
-                  style: TextStyle(fontWeight: FontWeight.w800),
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 3,
-              child: ElevatedButton(
-                key: const Key('publish_button'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.ink,
-                  foregroundColor: AppColors.softCream,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+              const SizedBox(width: 10),
+              Expanded(
+                flex: 2,
+                child: OutlinedButton(
+                  key: const Key('preview_button'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.ink,
+                    side: const BorderSide(
+                      color: AppColors.creamBorder,
+                      width: 1.5,
+                    ),
+                    backgroundColor: AppColors.cream,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  onPressed: () => _openPreview(
+                    context,
+                    context.read<AddArticleCubit>().state,
+                  ),
+                  child: const Text(
+                    'Preview',
+                    style: TextStyle(fontWeight: FontWeight.w800),
                   ),
                 ),
-                onPressed: isBusy
-                    ? null
-                    : () => context.read<AddArticleCubit>().publish(),
-                child: state.isPublishing
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: AppColors.softCream,
-                        ),
-                      )
-                    : Text(
-                        state.isEditingPublished ? 'Update' : 'Publish',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.3,
-                        ),
-                      ),
               ),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Expanded(
+                flex: 3,
+                child: ElevatedButton(
+                  key: const Key('publish_button'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.ink,
+                    foregroundColor: AppColors.softCream,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  onPressed: isBusy
+                      ? null
+                      : () => context.read<AddArticleCubit>().publish(),
+                  child: state.isPublishing
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.softCream,
+                          ),
+                        )
+                      : Text(
+                          state.isEditingPublished ? 'Update' : 'Publish',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

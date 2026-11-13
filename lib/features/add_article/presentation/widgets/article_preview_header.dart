@@ -124,6 +124,7 @@ class ArticlePreviewHeader extends StatelessWidget {
         url,
         height: 240,
         width: double.infinity,
+        cacheWidth: 720,
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => Container(
           height: 200,

@@ -227,19 +227,21 @@ class _UserArticlesBody extends StatelessWidget {
               )
             else if (state is ProfileArticlesLoaded)
               ...state.publishedArticles.map(
-                (item) => CustomArticleCardOfProfile(
-                  item: item,
-                  onEdit: () async {
-                    await Navigator.pushNamed(
-                      context,
-                      AppRoutes.addArticle,
-                      arguments: item,
-                    );
-                    if (context.mounted) {
-                      _refreshProfile(context);
-                    }
-                  },
-                  onDelete: () => _handleDelete(context, item),
+                (item) => RepaintBoundary(
+                  child: CustomArticleCardOfProfile(
+                    item: item,
+                    onEdit: () async {
+                      await Navigator.pushNamed(
+                        context,
+                        AppRoutes.addArticle,
+                        arguments: item,
+                      );
+                      if (context.mounted) {
+                        _refreshProfile(context);
+                      }
+                    },
+                    onDelete: () => _handleDelete(context, item),
+                  ),
                 ),
               ),
             SizedBox(height: 100 + MediaQuery.viewPaddingOf(context).bottom),

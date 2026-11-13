@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:mind_feed/config/routes/app_routes.dart';
 import 'package:mind_feed/core/articles/domain/entities/category_entity.dart';
 import 'package:mind_feed/core/constants/app_colors.dart';
 import 'package:mind_feed/core/constants/app_icons.dart';
 import 'package:mind_feed/core/constants/app_text_styles.dart';
+import 'package:mind_feed/core/design/editorial_card.dart';
 import 'package:mind_feed/core/utls/setup_service_locator.dart';
 import 'package:mind_feed/core/widgets/editorial_filter_dialog.dart';
 import 'package:mind_feed/core/widgets/search_bar.dart';
@@ -49,13 +51,22 @@ class _SearchViewContent extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 600),
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(20, 14, 20, 100 + bottomInset),
-              children: const [
-                Text('Search', style: AppTextStyles.searchHeaderTitle),
-                _SearchBarAndFilterRow(),
-                _ActiveFiltersSection(),
-                _SearchResultsSection(),
+            child: CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+                  sliver: SliverList.list(
+                    children: const [
+                      Text('Search', style: AppTextStyles.searchHeaderTitle),
+                      _SearchBarAndFilterRow(),
+                      _ActiveFiltersSection(),
+                    ],
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 100 + bottomInset),
+                  sliver: const _SearchResultsSection(),
+                ),
               ],
             ),
           ),
@@ -116,7 +127,9 @@ class _SearchBarAndFilterRow extends StatelessWidget {
       initialCategoryId: state.selectedCategory?.id,
       initialTags: state.selectedTags,
     );
-    if (selection == null) return;
+    if (selection == null) {
+      return;
+    }
 
     CategoryEntity? chosenCategory;
     if (selection.selectedCategoryId != null) {
@@ -162,21 +175,41 @@ class _SearchResultsSection extends StatelessWidget {
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         if (state is SearchLoading) {
-          return const SearchLoadingView();
+          return const SliverToBoxAdapter(child: SearchLoadingView());
         }
         if (state is SearchError) {
-          return SearchErrorView(
-            message: state.message,
-            onRetry: () => context.read<SearchCubit>().retry(),
+          return SliverToBoxAdapter(
+            child: SearchErrorView(
+              message: state.message,
+              onRetry: () => context.read<SearchCubit>().retry(),
+            ),
           );
         }
         if (state is SearchEmpty) {
-          return const SearchEmptyView();
+          return const SliverToBoxAdapter(child: SearchEmptyView());
         }
         if (state is SearchLoaded) {
-          return SearchResultsList(results: state.results);
+          return SliverList.builder(
+            itemCount: state.results.length,
+            itemBuilder: (context, index) {
+              final item = state.results[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: RepaintBoundary(
+                  child: EditorialCard(
+                    item: item,
+                    onOpen: () => Navigator.pushNamed(
+                      context,
+                      AppRoutes.article,
+                      arguments: item,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
         }
-        return const SearchInitialPromptView();
+        return const SliverToBoxAdapter(child: SearchInitialPromptView());
       },
     );
   }

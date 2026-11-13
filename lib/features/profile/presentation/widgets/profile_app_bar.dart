@@ -11,7 +11,8 @@ class ProfileAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
+      pinned: true,
+      backgroundColor: AppColors.darkerEdge,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
       leading: Navigator.canPop(context)

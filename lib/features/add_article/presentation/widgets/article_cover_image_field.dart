@@ -154,6 +154,7 @@ class ArticleCoverImageField extends StatelessWidget {
                   state.coverImageUrl.trim(),
                   height: 160,
                   width: double.infinity,
+                  cacheWidth: 720,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
                     height: 120,

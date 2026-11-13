@@ -54,12 +54,24 @@ class _AddArticleViewState extends State<AddArticleView> {
   @override
   Widget build(BuildContext context) {
     final content = BlocConsumer<AddArticleCubit, AddArticleState>(
+      listenWhen: (previous, current) =>
+          (current.errorMessage != null &&
+              current.errorMessage != previous.errorMessage) ||
+          (current.successMessage != null &&
+              current.successMessage != previous.successMessage),
       listener: (context, state) {
         final message = state.errorMessage ?? state.successMessage;
         if (message != null) {
           customShowSnackBar(context: context, message: message);
         }
       },
+      buildWhen: (previous, current) =>
+          previous.isLoading != current.isLoading ||
+          previous.editingItemId != current.editingItemId ||
+          previous.editingItemStatus != current.editingItemStatus ||
+          previous.hasLockoutError != current.hasLockoutError ||
+          (current.hasLockoutError &&
+              previous.errorMessage != current.errorMessage),
       builder: (context, state) {
         final isEditing =
             state.editingItemId != null && state.editingItemId!.isNotEmpty;

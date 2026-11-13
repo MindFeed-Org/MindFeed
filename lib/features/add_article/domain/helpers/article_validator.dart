@@ -28,7 +28,7 @@ Future<Size?> defaultImageDimensionResolver(
           info.image.width.toDouble(),
           info.image.height.toDouble(),
         );
-        info.image.dispose();
+        info.dispose();
         stream.removeListener(listener);
         if (!completer.isCompleted) {
           completer.complete(size);
