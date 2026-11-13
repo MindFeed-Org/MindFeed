@@ -136,7 +136,10 @@ class ArticleEditorActionBar extends StatelessWidget {
       authorRole: 'Writer',
       authorAvatar: CurrentUserSession.resolveCurrentUser()?.avatarUrl ?? '',
       excerpt: ArticleValidator.generateExcerpt(state.content),
-      color: AppColors.cream,
+      color: ArticleEntityEditorialMapper.resolveArticleSurfaceColor(
+        seed: state.editingItemId ?? state.title,
+        avoidColor: AppColors.butter,
+      ),
       tags: state.selectedTags,
       content: state.content,
       coverImageUrl: state.coverImageUrl.trim().isNotEmpty

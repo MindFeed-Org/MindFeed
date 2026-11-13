@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -152,6 +153,13 @@ extension ArticleEntityEditorialMapper on ArticleEntity {
             defaultColor: getCategoryColor(categoryKey),
           );
 
+    final resolvedColor = resolveArticleSurfaceColor(
+      seed: id.isNotEmpty ? id : title,
+      rawCardColor: cardColor,
+      avoidColor: resolvedBadgeColor,
+      avoidSecondaryColor: getCategoryColor(categoryKey),
+    );
+
     return EditorialNewsItem(
       id: id,
       badge: badge,
@@ -163,7 +171,7 @@ extension ArticleEntityEditorialMapper on ArticleEntity {
       authorAvatar: SupabaseStorageService.resolveAvatarUrl(authorAvatar) ??
           AppConstants.defaultAvatarUrl,
       excerpt: excerpt,
-      color: _parseHexColor(cardColor, defaultColor: AppColors.cream),
+      color: resolvedColor,
       isLive: isLive,
       categoryId: categoryId,
       categorySlug: categorySlug,
@@ -184,6 +192,62 @@ extension ArticleEntityEditorialMapper on ArticleEntity {
       authorRatingCount: authorRatingCount,
       userAuthorStars: userAuthorStars,
     );
+  }
+
+  static String pickRandomArticleSurfaceHex({
+    String? avoidHex,
+    Random? random,
+  }) {
+    final normalizedAvoid = avoidHex?.trim().toUpperCase();
+    final candidates = AppColors.articleSurfaceHexColors
+        .where((hex) => hex.toUpperCase() != normalizedAvoid)
+        .toList();
+    final pool = candidates.isNotEmpty
+        ? candidates
+        : AppColors.articleSurfaceHexColors;
+    return pool[(random ?? Random()).nextInt(pool.length)];
+  }
+
+  static Color resolveArticleSurfaceColor({
+    required String seed,
+    String? rawCardColor,
+    Color? avoidColor,
+    Color? avoidSecondaryColor,
+  }) {
+    final clean = rawCardColor?.trim().toUpperCase() ?? '';
+    final isDefaultCream =
+        clean.isEmpty || clean == '#FFF1C6' || clean == 'FFF1C6';
+    if (!isDefaultCream) {
+      final parsed = _parseHexColor(
+        rawCardColor,
+        defaultColor: AppColors.transparent,
+      );
+      final matchesAvoid = parsed.toARGB32() == AppColors.transparent.toARGB32() ||
+          (avoidColor != null && parsed.toARGB32() == avoidColor.toARGB32()) ||
+          (avoidSecondaryColor != null &&
+              parsed.toARGB32() == avoidSecondaryColor.toARGB32());
+      if (!matchesAvoid) {
+        return parsed;
+      }
+    }
+
+    final candidates = AppColors.articleSurfaceColors.where((surface) {
+      final argb = surface.toARGB32();
+      return (avoidColor == null || argb != avoidColor.toARGB32()) &&
+          (avoidSecondaryColor == null || argb != avoidSecondaryColor.toARGB32());
+    }).toList();
+    final pool = candidates.isNotEmpty ? candidates : AppColors.articleSurfaceColors;
+    final hash = _stableHash(seed.isNotEmpty ? seed : 'article');
+    return pool[hash % pool.length];
+  }
+
+  static int _stableHash(String input) {
+    var hash = 0x811C9DC5;
+    for (final codeUnit in input.codeUnits) {
+      hash ^= codeUnit;
+      hash = (hash * 0x01000193) & 0x7FFFFFFF;
+    }
+    return hash;
   }
 
   static Color _parseHexColor(String? hexString, {required Color defaultColor}) {
@@ -221,10 +285,11 @@ extension ArticleEntityEditorialMapper on ArticleEntity {
 
 extension DownloadedArticleEntityEditorialMapper on DownloadedArticleEntity {
   EditorialNewsItem toEditorialNewsItem() {
+    final resolvedBadgeColor = getCategoryColor(categorySlug);
     return EditorialNewsItem(
       id: id,
       badge: categorySlug.isNotEmpty ? categorySlug.toUpperCase() : 'OFFLINE',
-      badgeColor: getCategoryColor(categorySlug),
+      badgeColor: resolvedBadgeColor,
       title: title,
       updated: '$readingTimeMinutes min read',
       authorName: authorName.isNotEmpty ? authorName : 'Unknown',
@@ -244,7 +309,10 @@ extension DownloadedArticleEntityEditorialMapper on DownloadedArticleEntity {
       publishedAt: publishedAt,
       readingTimeMinutes: readingTimeMinutes,
       status: 'published',
-      color: AppColors.cream,
+      color: ArticleEntityEditorialMapper.resolveArticleSurfaceColor(
+        seed: id.isNotEmpty ? id : title,
+        avoidColor: resolvedBadgeColor,
+      ),
       isLive: false,
       isLiked: false,
       isSaved: true,

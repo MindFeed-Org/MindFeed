@@ -9,11 +9,7 @@ class ProfileView extends StatelessWidget {
   final ProfileArticlesCubit? cubit;
   final ProfileInfoCubit? infoCubit;
 
-  const ProfileView({
-    super.key,
-    this.cubit,
-    this.infoCubit,
-  });
+  const ProfileView({super.key, this.cubit, this.infoCubit});
 
   static const routeName = "profile";
 
@@ -25,17 +21,20 @@ class ProfileView extends StatelessWidget {
           BlocProvider<ProfileArticlesCubit>.value(value: cubit!)
         else if (GetIt.instance.isRegistered<ProfileArticlesCubit>())
           BlocProvider<ProfileArticlesCubit>(
-            create: (_) => GetIt.instance<ProfileArticlesCubit>()..loadArticles(),
+            create: (_) =>
+                GetIt.instance<ProfileArticlesCubit>()..loadArticles(),
           )
         else
           BlocProvider<ProfileArticlesCubit>(
-            create: (_) => GetIt.instance<ProfileArticlesCubit>()..loadArticles(),
+            create: (_) =>
+                GetIt.instance<ProfileArticlesCubit>()..loadArticles(),
           ),
         if (infoCubit != null)
           BlocProvider<ProfileInfoCubit>.value(value: infoCubit!)
         else if (GetIt.instance.isRegistered<ProfileInfoCubit>())
           BlocProvider<ProfileInfoCubit>(
-            create: (_) => GetIt.instance<ProfileInfoCubit>()..loadProfileData(),
+            create: (_) =>
+                GetIt.instance<ProfileInfoCubit>()..loadProfileData(),
           ),
       ],
       child: const Material(

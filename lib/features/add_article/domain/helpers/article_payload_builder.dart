@@ -32,12 +32,17 @@ sealed class ArticlePayloadBuilder {
     final excerpt = ArticleValidator.generateExcerpt(state.content);
     final readingTime = ArticleValidator.computeReadingTime(state.content);
 
+    final badgeColorHex =
+        category != null ? getCategoryColorHex(category.slug) : null;
     final payload = <String, dynamic>{
       'title': state.title.trim(),
       'excerpt': excerpt.isNotEmpty ? excerpt : 'Draft excerpt',
       'content': state.content,
       'author_id': user.id!,
       'author_name': resolveAuthorName(user),
+      'card_color': ArticleEntityEditorialMapper.pickRandomArticleSurfaceHex(
+        avoidHex: badgeColorHex,
+      ),
       'reading_time_minutes': readingTime,
       'tags': state.selectedTags,
     };
@@ -71,6 +76,7 @@ sealed class ArticlePayloadBuilder {
     final excerpt = ArticleValidator.generateExcerpt(state.content);
     final readingTime = ArticleValidator.computeReadingTime(state.content);
 
+    final badgeColorHex = getCategoryColorHex(category.slug);
     final payload = <String, dynamic>{
       'title': state.title.trim(),
       'excerpt': excerpt,
@@ -80,7 +86,10 @@ sealed class ArticlePayloadBuilder {
       'category_id': category.id,
       'category_slug': category.slug,
       'badge': category.name.toUpperCase(),
-      'badge_color': getCategoryColorHex(category.slug),
+      'badge_color': badgeColorHex,
+      'card_color': ArticleEntityEditorialMapper.pickRandomArticleSurfaceHex(
+        avoidHex: badgeColorHex,
+      ),
       'cover_image_url': state.coverImageUrl.trim(),
       'tags': state.selectedTags,
       'reading_time_minutes': readingTime,

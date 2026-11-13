@@ -468,9 +468,9 @@
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/views/profile_view.dart": {
-    "mtime": 1793795131.1316416,
-    "seen": 1793795638.7221973,
-    "ast_hash": "59ccbe188759dabedfc2d0299164ca22",
+    "mtime": 1794586707.926546,
+    "seen": 1794586788.9587145,
+    "ast_hash": "6b209833c76bfa3f5fa20f698668f67c",
     "semantic_hash": ""
   },
   "lib/features/search/presentation/views/articles_category_view.dart": {
@@ -630,9 +630,9 @@
     "semantic_hash": ""
   },
   "lib/core/design/editorial_models.dart": {
-    "mtime": 1794575663.6864586,
-    "seen": 1794575915.0967083,
-    "ast_hash": "c7c4c625906746cac0a9c4e8d49d51dc",
+    "mtime": 1794586611.6306634,
+    "seen": 1794586788.8137183,
+    "ast_hash": "743cf3826c6d13e2df4fb7d3ed74b471",
     "semantic_hash": ""
   },
   "lib/core/design/editorial_saved_stack.dart": {
@@ -666,9 +666,9 @@
     "semantic_hash": ""
   },
   "lib/core/constants/app_colors.dart": {
-    "mtime": 1793795131.0568638,
-    "seen": 1793795638.6674027,
-    "ast_hash": "17c6709d2ab130dc29d0711a941c0c02",
+    "mtime": 1794586604.7408965,
+    "seen": 1794586788.8079653,
+    "ast_hash": "ec135189f935e9f5f59731f86c950745",
     "semantic_hash": ""
   },
   "lib/core/constants/app_icons.dart": {
@@ -798,9 +798,9 @@
     "semantic_hash": "a2670e0d207239142f03798fda24e247"
   },
   "test/features/home/article_data_and_domain_test.dart": {
-    "mtime": 1793795176.0114965,
-    "seen": 1793795638.7315931,
-    "ast_hash": "9acf17e55817bf8435b08f5eabcb90ef",
+    "mtime": 1794586635.13917,
+    "seen": 1794586789.0161865,
+    "ast_hash": "74bdfeac0363186daabeeca6a2a49d57",
     "semantic_hash": ""
   },
   "test/offline_articles_and_logout_test.dart": {
@@ -1560,9 +1560,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_editor_action_bar.dart": {
-    "mtime": 1793795175.924852,
-    "seen": 1793795638.676775,
-    "ast_hash": "6532207c316f6ab5a742a763f01a5df7",
+    "mtime": 1794586632.7750812,
+    "seen": 1794586788.8439014,
+    "ast_hash": "c13b72623c639a8a9fdff72581c8359f",
     "semantic_hash": ""
   },
   "lib/features/add_article/presentation/widgets/article_field_helpers.dart": {
@@ -1746,9 +1746,9 @@
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/widgets/profile_app_bar.dart": {
-    "mtime": 1793795131.1334047,
-    "seen": 1793795638.7222137,
-    "ast_hash": "e36c64dc61cccd321a50fc5421f955a5",
+    "mtime": 1794586141.5301785,
+    "seen": 1794586788.9617946,
+    "ast_hash": "bfaf05276e19745ed16c1885d8819653",
     "semantic_hash": ""
   },
   "lib/features/profile/presentation/widgets/profile_articles_status_views.dart": {
@@ -1914,8 +1914,8 @@
     "semantic_hash": ""
   },
   "lib/core/articles/data/datasources/articles_remote_data_source.dart": {
-    "mtime": 1793795175.9014387,
-    "seen": 1793795638.6673584,
+    "mtime": 1794579602.6751404,
+    "seen": 1794586788.7873209,
     "ast_hash": "2bea554f4786c1bed5a5dfc22124535d",
     "semantic_hash": ""
   },
@@ -2358,9 +2358,9 @@
     "semantic_hash": ""
   },
   "lib/features/add_article/domain/helpers/article_payload_builder.dart": {
-    "mtime": 1794575666.237471,
-    "seen": 1794575915.1132262,
-    "ast_hash": "06d252ef9ecaf2138884a3fa1e7fc78b",
+    "mtime": 1794586628.0534058,
+    "seen": 1794586788.8285077,
+    "ast_hash": "c6aeed12029cfe0c62700b1e57c494e8",
     "semantic_hash": ""
   },
   "lib/features/add_article/domain/helpers/article_state_transformers.dart": {
@@ -2610,9 +2610,9 @@
     "semantic_hash": ""
   },
   "lib/features/collections/presentation/views/downloaded_article_reader_view.dart": {
-    "mtime": 1793795175.949271,
-    "seen": 1793795638.7118585,
-    "ast_hash": "77853d904c4fb0ef76632db8ec59a6d7",
+    "mtime": 1794586631.2392602,
+    "seen": 1794586788.9232173,
+    "ast_hash": "eebd74f936ec266a69b786e4551e1f66",
     "semantic_hash": ""
   },
   "test/features/collections/presentation/views/downloaded_article_reader_view_test.dart": {
@@ -2661,6 +2661,12 @@
     "mtime": 1794576881.7722871,
     "seen": 1794576970.8070755,
     "ast_hash": "b7bbdd09172e5433bc68319c048fb89e",
+    "semantic_hash": ""
+  },
+  "test/core/design/article_surface_color_test.dart": {
+    "mtime": 1794586723.4992878,
+    "seen": 1794586789.000359,
+    "ast_hash": "ffee4a98ab9e75a958ac572fdfdb21f6",
     "semantic_hash": ""
   }
 }

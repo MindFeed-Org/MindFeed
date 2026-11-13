@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show Ticker;
 
 import 'package:mind_feed/core/articles/domain/entities/downloaded_article_entity.dart';
-import 'package:mind_feed/core/constants/app_colors.dart';
 import 'package:mind_feed/core/constants/category_items.dart';
+import 'package:mind_feed/core/design/editorial_models.dart';
 import 'package:mind_feed/features/article/presentation/widgets/article_reader_empty_view.dart';
 import 'package:mind_feed/features/article/presentation/widgets/article_reader_header.dart';
 import 'package:mind_feed/features/article/presentation/widgets/article_reader_markdown_body.dart';
@@ -141,8 +141,12 @@ class _DownloadedArticleReaderViewState
         ? article.categorySlug.toUpperCase()
         : 'OFFLINE';
 
+    final resolvedBadgeColor = getCategoryColor(article.categorySlug);
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: ArticleEntityEditorialMapper.resolveArticleSurfaceColor(
+        seed: article.id.isNotEmpty ? article.id : article.title,
+        avoidColor: resolvedBadgeColor,
+      ),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(

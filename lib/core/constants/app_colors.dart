@@ -166,4 +166,22 @@ sealed class AppColors {
   static const Color creamAlpha65 = Color(0x41FFF1C6);
   static const Color softCreamAlpha180 = Color(0xB4FFF8E6);
   static const Color softCreamAlpha185 = Color(0xB9FFF8E6);
+
+  /// Five soft editorial paper surface colors used across article cards and
+  /// reader pages so surfaces vary without clashing with category badge colors.
+  static const List<Color> articleSurfaceColors = <Color>[
+    peach,
+    blush,
+    lilac,
+    powder,
+    mint,
+  ];
+
+  static const List<String> articleSurfaceHexColors = <String>[
+    '#FFE5D0',
+    '#FFDDE0',
+    '#E9DEFF',
+    '#DCEEFF',
+    '#D7F5E8',
+  ];
 }

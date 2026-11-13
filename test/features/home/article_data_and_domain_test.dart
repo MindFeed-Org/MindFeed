@@ -301,7 +301,7 @@ void main() {
         excerpt: 'Some excerpt',
         badge: 'SCIENCE',
         badgeColor: '#059669',
-        cardColor: '#FFF1C6',
+        cardColor: '#DCEEFF',
         authorName: 'Dr. Jane Doe',
         authorRole: 'Chief Scientist',
         authorAvatar: 'https://images.unsplash.com/avatar.png',
@@ -315,7 +315,7 @@ void main() {
       expect(editorial.id, 'art-3');
       expect(editorial.badge, 'SCIENCE');
       expect(editorial.badgeColor.toARGB32(), 0xFF059669);
-      expect(editorial.color.toARGB32(), 0xFFFFF1C6);
+      expect(editorial.color.toARGB32(), 0xFFDCEEFF);
       expect(editorial.title, 'Title line 1\nTitle line 2');
       expect(editorial.authorName, 'Dr. Jane Doe');
       expect(editorial.authorAvatar, 'https://images.unsplash.com/avatar.png');
