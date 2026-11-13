@@ -17,7 +17,6 @@ class ArticleEntity extends Equatable {
   final String badgeColor;
   final String cardColor;
   final bool isLive;
-  final String? heroImageUrl;
   final String? coverImageUrl;
   final int likesCount;
   final int savesCount;
@@ -52,7 +51,6 @@ class ArticleEntity extends Equatable {
     this.badgeColor = '#FFF1C6',
     this.cardColor = '#FFF1C6',
     this.isLive = false,
-    this.heroImageUrl,
     this.coverImageUrl,
     this.likesCount = 0,
     this.savesCount = 0,
@@ -88,7 +86,6 @@ class ArticleEntity extends Equatable {
     String? badgeColor,
     String? cardColor,
     bool? isLive,
-    String? heroImageUrl,
     String? coverImageUrl,
     int? likesCount,
     int? savesCount,
@@ -123,7 +120,6 @@ class ArticleEntity extends Equatable {
       badgeColor: badgeColor ?? this.badgeColor,
       cardColor: cardColor ?? this.cardColor,
       isLive: isLive ?? this.isLive,
-      heroImageUrl: heroImageUrl ?? this.heroImageUrl,
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
       likesCount: likesCount ?? this.likesCount,
       savesCount: savesCount ?? this.savesCount,
@@ -161,7 +157,6 @@ class ArticleEntity extends Equatable {
         badgeColor,
         cardColor,
         isLive,
-        heroImageUrl,
         coverImageUrl,
         likesCount,
         savesCount,

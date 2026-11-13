@@ -31,6 +31,11 @@ The codebase follows **Feature-First Clean Architecture**:
 - **Zero Firebase Dependency**: Fully decoupled from Firebase SDKs, CLI configurations, and external Google services.
 
 ## 4. Recent Project Changes
+- **Supabase Storage Service Refactoring (`SupabaseStorageService`)**:
+  - Refactored `lib/core/services/supabase_storage_service.dart` for enhanced readability, DRY architecture, and maintainability.
+  - Extracted common URL resolution into `resolveBucketUrl`, reducing duplication between `resolveAvatarUrl` and `resolveArticleMediaUrl`.
+  - Unified binary storage uploading and obsolete asset cleanup into private `_uploadToBucket` and `_cleanupPreviousFile` pipelines.
+  - Enforced full curly brace lint compliance (`curly_braces_in_flow_control_structures`) and kept all methods small and focused.
 - **Saved Tab Refresh on Selection**: Fixed stale saved articles list in `MainView` (`_onTabSelected`) by incrementing `_savedRefreshSeed` and refreshing `_cachedTabs[2]` on tab selection (matching tab 3 Downloads behavior), ensuring `ArticlesSaved` reloads newly bookmarked stories.
 - **CI/CD Build & Release Automation**:
   - Configured GitHub Actions release workflows for automated builds on `push` to `main` and release tags (`v*`).

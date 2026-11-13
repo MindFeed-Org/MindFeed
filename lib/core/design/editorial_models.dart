@@ -26,7 +26,6 @@ class EditorialNewsItem {
   final List<String> tags;
   final String? content;
   final String? coverImageUrl;
-  String? get heroImageUrl => coverImageUrl;
   final Uint8List? coverImageBytes;
   final Uint8List? authorAvatarBytes;
   final String? authorId;
@@ -170,11 +169,8 @@ extension ArticleEntityEditorialMapper on ArticleEntity {
       categorySlug: categorySlug,
       tags: tags,
       content: content,
-      coverImageUrl: SupabaseStorageService.resolveArticleMediaUrl(
-        (heroImageUrl != null && heroImageUrl!.trim().isNotEmpty)
-            ? heroImageUrl
-            : coverImageUrl,
-      ),
+      coverImageUrl:
+          SupabaseStorageService.resolveArticleMediaUrl(coverImageUrl),
       authorId: authorId,
       publishedAt: publishedAt,
       readingTimeMinutes: readingTimeMinutes,

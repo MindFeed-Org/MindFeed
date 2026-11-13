@@ -130,9 +130,7 @@ sealed class ArticleStateTransformers {
       availableTags: mergedAvailable,
       title: editingItem?.title ?? state.title,
       content: editingItem?.content ?? state.content,
-      coverImageUrl: editingItem?.heroImageUrl ??
-          editingItem?.coverImageUrl ??
-          state.coverImageUrl,
+      coverImageUrl: editingItem?.coverImageUrl ?? state.coverImageUrl,
       selectedCategoryId: categoryId,
       selectedTags: editingItem != null
           ? List<String>.from(editingItem.tags)

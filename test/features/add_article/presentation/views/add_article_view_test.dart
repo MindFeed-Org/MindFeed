@@ -119,7 +119,7 @@ void main() {
   });
 
   testWidgets(
-    'editing article populates cover URL from heroImageUrl and typing updates state',
+    'editing article populates cover URL from coverImageUrl and typing updates state',
     (WidgetTester tester) async {
       tester.view.physicalSize = const Size(1200, 2400);
       tester.view.devicePixelRatio = 1.0;

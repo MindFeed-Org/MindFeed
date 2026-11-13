@@ -20,7 +20,6 @@ class ArticleModel extends ArticleEntity {
     super.badgeColor = '#FFF1C6',
     super.cardColor = '#FFF1C6',
     super.isLive = false,
-    super.heroImageUrl,
     super.coverImageUrl,
     super.likesCount = 0,
     super.savesCount = 0,
@@ -48,6 +47,9 @@ class ArticleModel extends ArticleEntity {
         (json['author_avatar'] as String?);
     final rawAuthorName = json['author_name'] as String?;
     final profileDisplayName = profileMap?['display_name'] as String?;
+    final resolvedCoverUrl = SupabaseStorageService.resolveArticleMediaUrl(
+      json['cover_image_url'] as String?,
+    );
 
     return ArticleModel(
       id: json['id'] as String? ?? '',
@@ -69,14 +71,7 @@ class ArticleModel extends ArticleEntity {
       badgeColor: json['badge_color'] as String? ?? '#FFF1C6',
       cardColor: json['card_color'] as String? ?? '#FFF1C6',
       isLive: json['is_live'] as bool? ?? false,
-      heroImageUrl: SupabaseStorageService.resolveArticleMediaUrl(
-        (json['hero_image_url'] as String?) ??
-            (json['cover_image_url'] as String?),
-      ),
-      coverImageUrl: SupabaseStorageService.resolveArticleMediaUrl(
-        (json['hero_image_url'] as String?) ??
-            (json['cover_image_url'] as String?),
-      ),
+      coverImageUrl: resolvedCoverUrl,
       likesCount: (json['likes_count'] as num?)?.toInt() ?? 0,
       savesCount: (json['saves_count'] as num?)?.toInt() ?? 0,
       starCount: (json['star_count'] as num?)?.toInt() ?? 0,
@@ -113,7 +108,6 @@ class ArticleModel extends ArticleEntity {
       badgeColor: entity.badgeColor,
       cardColor: entity.cardColor,
       isLive: entity.isLive,
-      heroImageUrl: entity.heroImageUrl,
       coverImageUrl: entity.coverImageUrl,
       likesCount: entity.likesCount,
       savesCount: entity.savesCount,
@@ -156,7 +150,6 @@ class ArticleModel extends ArticleEntity {
     if (authorId != null) map['author_id'] = authorId;
     if (categoryId != null) map['category_id'] = categoryId;
     if (categorySlug != null) map['category_slug'] = categorySlug;
-    if (heroImageUrl != null) map['hero_image_url'] = heroImageUrl;
     if (coverImageUrl != null) map['cover_image_url'] = coverImageUrl;
 
     if (includeServerManagedFields) {
@@ -191,7 +184,6 @@ class ArticleModel extends ArticleEntity {
     String? badgeColor,
     String? cardColor,
     bool? isLive,
-    String? heroImageUrl,
     String? coverImageUrl,
     int? likesCount,
     int? savesCount,
@@ -226,7 +218,6 @@ class ArticleModel extends ArticleEntity {
       badgeColor: badgeColor ?? this.badgeColor,
       cardColor: cardColor ?? this.cardColor,
       isLive: isLive ?? this.isLive,
-      heroImageUrl: heroImageUrl ?? this.heroImageUrl,
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
       likesCount: likesCount ?? this.likesCount,
       savesCount: savesCount ?? this.savesCount,

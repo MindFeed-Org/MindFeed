@@ -52,7 +52,6 @@ sealed class ArticlePayloadBuilder {
       payload['badge'] = category.name.toUpperCase();
     }
     if (state.coverImageUrl.trim().isNotEmpty) {
-      payload['hero_image_url'] = state.coverImageUrl.trim();
       payload['cover_image_url'] = state.coverImageUrl.trim();
     }
     if (includeSlug) {
@@ -82,7 +81,6 @@ sealed class ArticlePayloadBuilder {
       'category_slug': category.slug,
       'badge': category.name.toUpperCase(),
       'badge_color': getCategoryColorHex(category.slug),
-      'hero_image_url': state.coverImageUrl.trim(),
       'cover_image_url': state.coverImageUrl.trim(),
       'tags': state.selectedTags,
       'reading_time_minutes': readingTime,
