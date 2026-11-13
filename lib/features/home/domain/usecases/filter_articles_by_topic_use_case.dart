@@ -3,14 +3,22 @@ import 'package:mind_feed/core/articles/domain/entities/article_entity.dart';
 class FilterArticlesByTopicUseCase {
   const FilterArticlesByTopicUseCase();
 
-  List<ArticleEntity> call(List<ArticleEntity> articles, String selectedTopic) {
+  List<ArticleEntity> call(
+    List<ArticleEntity> articles,
+    String selectedTopic, {
+    String? selectedTopicCategoryId,
+    String? selectedTopicCategorySlug,
+  }) {
     return filterItems<ArticleEntity>(
       items: articles,
       selectedTopic: selectedTopic,
       badgeOf: (a) => a.badge,
+      categoryIdOf: (a) => a.categoryId,
       categorySlugOf: (a) => a.categorySlug,
       tagsOf: (a) => a.tags,
       isLiveOf: (a) => a.isLive,
+      selectedTopicCategoryId: selectedTopicCategoryId,
+      selectedTopicCategorySlug: selectedTopicCategorySlug,
     );
   }
 
@@ -18,106 +26,134 @@ class FilterArticlesByTopicUseCase {
     required List<T> items,
     required String selectedTopic,
     required String Function(T) badgeOf,
+    String? Function(T)? categoryIdOf,
     required String? Function(T) categorySlugOf,
     required List<String> Function(T) tagsOf,
     required bool Function(T) isLiveOf,
+    String? selectedTopicCategoryId,
+    String? selectedTopicCategorySlug,
   }) {
-    if (selectedTopic == 'All') return items;
+    if (selectedTopic == 'All') {
+      return items;
+    }
     if (selectedTopic == 'Trending') {
       return items
           .where((s) => isLiveOf(s) || badgeOf(s) == 'LIVE' || badgeOf(s) == 'TECH')
           .toList();
     }
 
-    final topicLower = selectedTopic.toLowerCase().trim();
-    final topicSlug = _toSlug(topicLower);
-    final topicKeywords = _extractKeywords(topicLower);
+    final targetId = selectedTopicCategoryId?.trim();
+    final acceptedTerms = _resolveAcceptedTerms(
+      selectedTopic,
+      selectedTopicCategorySlug: selectedTopicCategorySlug,
+    );
+    if ((targetId == null || targetId.isEmpty) && acceptedTerms.isEmpty) {
+      return const [];
+    }
 
-    final matching = items
-        .where((s) => _matchesItem(
-              item: s,
-              topicLower: topicLower,
-              topicSlug: topicSlug,
-              topicKeywords: topicKeywords,
-              badgeOf: badgeOf,
-              categorySlugOf: categorySlugOf,
-              tagsOf: tagsOf,
-            ))
+    return items
+        .where(
+          (item) => _matchesItem(
+            item: item,
+            targetCategoryId: targetId,
+            acceptedTerms: acceptedTerms,
+            badgeOf: badgeOf,
+            categoryIdOf: categoryIdOf,
+            categorySlugOf: categorySlugOf,
+            tagsOf: tagsOf,
+          ),
+        )
         .toList();
-    if (matching.isNotEmpty) return matching;
-
-    return _fallbackCategoryMatch(items, topicLower, badgeOf);
   }
 
-  static String _toSlug(String topicLower) => topicLower
+  static String _normalizeRaw(String value) =>
+      value.toLowerCase().trim().replaceAll('_', '-');
+
+  static String _toSlug(String normalized) => normalized
       .replaceAll('&', 'and')
       .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
       .replaceAll(RegExp(r'^-|-$'), '');
 
-  static List<String> _extractKeywords(String topicLower) => topicLower
-      .split(RegExp(r'[^a-z0-9]+'))
-      .where((w) => w.length >= 3 && w != 'and')
-      .toList();
+  static String _toCompactSlug(String normalized) => normalized
+      .replaceAll('&', ' ')
+      .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
+      .replaceAll(RegExp(r'^-|-$'), '');
+
+  static Set<String> _resolveAcceptedTerms(
+    String topic, {
+    String? selectedTopicCategorySlug,
+  }) {
+    final terms = <String>{};
+    void addForms(String? raw) {
+      if (raw == null) {
+        return;
+      }
+      final normalized = _normalizeRaw(raw);
+      if (normalized.isEmpty) {
+        return;
+      }
+      terms.add(normalized);
+      final slug = _toSlug(normalized);
+      if (slug.isNotEmpty) {
+        terms.add(slug);
+      }
+      final compact = _toCompactSlug(normalized);
+      if (compact.isNotEmpty) {
+        terms.add(compact);
+      }
+    }
+
+    addForms(topic);
+    addForms(selectedTopicCategorySlug);
+    return terms;
+  }
+
+  static bool _matchesCandidate(String candidate, Set<String> acceptedTerms) {
+    final normalized = _normalizeRaw(candidate);
+    if (normalized.isEmpty) {
+      return false;
+    }
+    return acceptedTerms.contains(normalized) ||
+        acceptedTerms.contains(_toSlug(normalized)) ||
+        acceptedTerms.contains(_toCompactSlug(normalized));
+  }
 
   static bool _matchesItem<T>({
     required T item,
-    required String topicLower,
-    required String topicSlug,
-    required List<String> topicKeywords,
+    required String? targetCategoryId,
+    required Set<String> acceptedTerms,
     required String Function(T) badgeOf,
+    required String? Function(T)? categoryIdOf,
     required String? Function(T) categorySlugOf,
     required List<String> Function(T) tagsOf,
   }) {
-    final badgeLower = badgeOf(item).toLowerCase().trim();
-    final slugLower = categorySlugOf(item)?.toLowerCase().trim();
-    final tags = tagsOf(item);
+    final itemCategoryId = categoryIdOf?.call(item)?.trim();
+    if (targetCategoryId != null &&
+        targetCategoryId.isNotEmpty &&
+        itemCategoryId != null &&
+        itemCategoryId.isNotEmpty) {
+      return itemCategoryId == targetCategoryId;
+    }
 
-    if (badgeLower == topicLower || badgeLower == topicSlug) return true;
-    if (slugLower != null && (slugLower == topicLower || slugLower == topicSlug)) {
+    final rawSlug = categorySlugOf(item);
+    if (rawSlug != null && rawSlug.trim().isNotEmpty) {
+      return _matchesCandidate(rawSlug, acceptedTerms);
+    }
+
+    final badgeNormalized = _normalizeRaw(badgeOf(item));
+    if (_matchesCandidate(badgeNormalized, acceptedTerms)) {
       return true;
     }
-    if (tags.any((t) {
-      final tagLower = t.toLowerCase().trim();
-      return tagLower == topicLower || tagLower == topicSlug;
-    })) {
+    if (badgeNormalized.length >= 4 &&
+        acceptedTerms.any((term) => term.startsWith(badgeNormalized))) {
       return true;
     }
-    return topicKeywords.any(
-      (kw) =>
-          badgeLower == kw ||
-          (badgeLower.length >= 3 && kw.startsWith(badgeLower)) ||
-          (slugLower != null && slugLower.contains(kw)) ||
-          tags.any((t) => t.toLowerCase().trim() == kw),
-    );
-  }
 
-  static List<T> _fallbackCategoryMatch<T>(
-    List<T> items,
-    String topicLower,
-    String Function(T) badgeOf,
-  ) {
-    if (topicLower == 'tech' || topicLower == 'technology') {
-      return items.where((s) {
-        final b = badgeOf(s).toUpperCase();
-        return b == 'TECH' || b == 'TECHNOLOGY' || b == 'AI';
-      }).toList();
+    for (final tag in tagsOf(item)) {
+      if (_matchesCandidate(tag, acceptedTerms)) {
+        return true;
+      }
     }
-    if (topicLower == 'science') {
-      return items.where((s) {
-        final b = badgeOf(s).toUpperCase();
-        return b == 'SCIENCE' || b == 'SPACE';
-      }).toList();
-    }
-    if (topicLower == 'health' || topicLower.startsWith('health')) {
-      return items
-          .where((s) => badgeOf(s).toUpperCase().startsWith('HEALTH'))
-          .toList();
-    }
-    if (topicLower == 'sports' || topicLower == 'sport') {
-      return items
-          .where((s) => badgeOf(s).toUpperCase().startsWith('SPORT'))
-          .toList();
-    }
-    return items;
+    return false;
   }
 }

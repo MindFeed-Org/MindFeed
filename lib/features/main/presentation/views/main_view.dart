@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mind_feed/core/constants/app_colors.dart';
+import 'package:mind_feed/core/services/current_user_session.dart';
 import 'package:mind_feed/features/collections/presentation/views/articles_saved.dart';
 import 'package:mind_feed/features/collections/presentation/views/downloaded_articles_view.dart';
 import 'package:mind_feed/features/home/presentation/views/home_view.dart';
@@ -21,13 +23,34 @@ class _MainViewState extends State<MainView> {
   final Set<int> _visitedTabs = {0};
   final Map<int, Widget> _cachedTabs = {};
 
+  int _homeRefreshSeed = 0;
   int _savedRefreshSeed = 0;
   int _downloadsRefreshSeed = 0;
+  List<String> _lastFavoriteCategories = const [];
 
   @override
   void initState() {
     super.initState();
-    _cachedTabs[0] = const HomeView();
+    _lastFavoriteCategories = _readFavoriteCategories();
+    _cachedTabs[0] = HomeView(key: ValueKey<int>(_homeRefreshSeed));
+  }
+
+  List<String> _readFavoriteCategories() {
+    return List<String>.unmodifiable(
+      CurrentUserSession.resolveCachedUserEntity()?.favoriteCategories ??
+          const <String>[],
+    );
+  }
+
+  bool _refreshHomeIfFavoritesChanged() {
+    final current = _readFavoriteCategories();
+    if (listEquals(current, _lastFavoriteCategories)) {
+      return false;
+    }
+    _lastFavoriteCategories = current;
+    _homeRefreshSeed++;
+    _cachedTabs[0] = HomeView(key: ValueKey<int>(_homeRefreshSeed));
+    return true;
   }
 
   void _onTabSelected(int index) {
@@ -40,7 +63,9 @@ class _MainViewState extends State<MainView> {
 
     setState(() {
       _visitedTabs.add(index);
-      if (index == 2) {
+      if (index == 0) {
+        _refreshHomeIfFavoritesChanged();
+      } else if (index == 2) {
         _refreshSavedTab();
       } else if (index == 3) {
         _refreshDownloadsTab();
@@ -52,7 +77,12 @@ class _MainViewState extends State<MainView> {
   }
 
   void _handleSameTabTapped(int index) {
-    if (index == 2) {
+    if (index == 0) {
+      final current = _readFavoriteCategories();
+      if (!listEquals(current, _lastFavoriteCategories)) {
+        setState(_refreshHomeIfFavoritesChanged);
+      }
+    } else if (index == 2) {
       setState(() {
         _refreshSavedTab();
       });
@@ -76,7 +106,7 @@ class _MainViewState extends State<MainView> {
 
   Widget _buildChildWidget(int index) {
     return switch (index) {
-      0 => const HomeView(),
+      0 => HomeView(key: ValueKey<int>(_homeRefreshSeed)),
       1 => const SearchView(),
       2 => ArticlesSaved(refreshSeed: _savedRefreshSeed),
       3 => DownloadedArticlesView(refreshSeed: _downloadsRefreshSeed),
@@ -100,6 +130,7 @@ class _MainViewState extends State<MainView> {
   void _handlePop() {
     if (_selectedIndex != 0) {
       setState(() {
+        _refreshHomeIfFavoritesChanged();
         _selectedIndex = 0;
       });
     }

@@ -82,10 +82,17 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
     );
 
     await result.when(
-      success: (articles) =>
-          _handleFeedSuccess(articles, topicsResult.topics, userId),
-      failure: (failure) async =>
-          _handleFeedFailure(failure.message, topicsResult.topics),
+      success: (articles) => _handleFeedSuccess(
+        articles,
+        topicsResult.topics,
+        topicsResult.topicRefs,
+        userId,
+      ),
+      failure: (failure) async => _handleFeedFailure(
+        failure.message,
+        topicsResult.topics,
+        topicsResult.topicRefs,
+      ),
     );
   }
 
@@ -102,6 +109,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
   Future<void> _handleFeedSuccess(
     List<ArticleEntity> articles,
     List<String> topics,
+    Map<String, FeedTopicRef> topicRefs,
     String? userId,
   ) async {
     final selectedTopic =
@@ -118,6 +126,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         allArticles: editorialItems,
         topics: topics,
         selectedTopic: selectedTopic,
+        topicRefs: topicRefs,
       ),
     );
   }
@@ -140,7 +149,11 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
     return savedIds;
   }
 
-  void _handleFeedFailure(String rawMessage, List<String> topics) {
+  void _handleFeedFailure(
+    String rawMessage,
+    List<String> topics,
+    Map<String, FeedTopicRef> topicRefs,
+  ) {
     final msg = rawMessage.toLowerCase();
     final isOffline = msg.contains('offline') ||
         msg.contains('network') ||
@@ -157,6 +170,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         allArticles: state.allArticles,
         topics: topics,
         selectedTopic: state.selectedTopic,
+        topicRefs: topicRefs,
       ),
     );
   }

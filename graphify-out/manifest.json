@@ -408,9 +408,9 @@
     "semantic_hash": ""
   },
   "lib/features/main/presentation/views/main_view.dart": {
-    "mtime": 1794048655.446963,
-    "seen": 1794049133.8698437,
-    "ast_hash": "9d832811a9a676173df87c8daa3b9bed",
+    "mtime": 1794576655.1058822,
+    "seen": 1794576970.7285068,
+    "ast_hash": "ab14926a184b24f2b775e3e9e505915a",
     "semantic_hash": ""
   },
   "lib/features/main/presentation/widgets/main_navigation_bar.dart": {
@@ -1266,9 +1266,9 @@
     "semantic_hash": ""
   },
   "test/features/reader/home_feed_cubit_test.dart": {
-    "mtime": 1793795176.0205364,
-    "seen": 1793795638.7316337,
-    "ast_hash": "54b74716f4b311fcf807ca7be6bcbfe8",
+    "mtime": 1794576880.0153544,
+    "seen": 1794576970.818423,
+    "ast_hash": "76dd9fcfaf3c82fae1fe5972a82ab5a5",
     "semantic_hash": ""
   },
   "test/features/search/search_filter_helper_test.dart": {
@@ -1302,15 +1302,15 @@
     "semantic_hash": ""
   },
   "lib/features/home/domain/usecases/filter_articles_by_topic_use_case.dart": {
-    "mtime": 1793795131.1129742,
-    "seen": 1793795638.7126174,
-    "ast_hash": "de7e1799c0f29054ef87d94295905b28",
+    "mtime": 1794576836.7547026,
+    "seen": 1794576970.7191455,
+    "ast_hash": "8cce56fb309116abc51cb5df19981495",
     "semantic_hash": ""
   },
   "lib/features/home/domain/usecases/get_user_feed_topics_use_case.dart": {
-    "mtime": 1793795175.9549868,
-    "seen": 1793795638.7126205,
-    "ast_hash": "683114a9629ac9fd0ad46ab7bd3292d4",
+    "mtime": 1794576855.5103667,
+    "seen": 1794576970.7198787,
+    "ast_hash": "655aa55456b9e84d0a554dbdde353002",
     "semantic_hash": ""
   },
   "lib/features/home/presentation/widgets/home_feed_empty_view.dart": {
@@ -1656,15 +1656,15 @@
     "semantic_hash": ""
   },
   "lib/features/home/presentation/controllers/home_feed/home_feed_cubit.dart": {
-    "mtime": 1793795175.956283,
-    "seen": 1793795638.712622,
-    "ast_hash": "3e99e796ca6d9fcbed9cd85a9c77925b",
+    "mtime": 1794576841.18653,
+    "seen": 1794576970.7198808,
+    "ast_hash": "7a2bf8dbe77f9277d77ea8c89edd2e4d",
     "semantic_hash": ""
   },
   "lib/features/home/presentation/controllers/home_feed/home_feed_state.dart": {
-    "mtime": 1793795131.1155186,
-    "seen": 1793795638.7126236,
-    "ast_hash": "77861d3e6645af72d071655825b16c90",
+    "mtime": 1794576838.1864376,
+    "seen": 1794576970.7198827,
+    "ast_hash": "6b278e29ab63b39222de4de81ea24a63",
     "semantic_hash": ""
   },
   "lib/features/main/presentation/controllers/main_shell_cubit/main_shell_cubit.dart": {
@@ -2655,6 +2655,12 @@
     "mtime": 1794576042.9058354,
     "seen": 1794576124.3045456,
     "ast_hash": "ba69d320bbe37ee9e1ca49a2019d93e7",
+    "semantic_hash": ""
+  },
+  "test/features/home/home_topic_filtering_test.dart": {
+    "mtime": 1794576881.7722871,
+    "seen": 1794576970.8070755,
+    "ast_hash": "b7bbdd09172e5433bc68319c048fb89e",
     "semantic_hash": ""
   }
 }

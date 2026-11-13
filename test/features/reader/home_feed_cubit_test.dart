@@ -264,6 +264,9 @@ void main() {
     expect(cubit.state.filteredArticles.length, equals(1));
     expect(cubit.state.filteredArticles.first.id, equals('art_1'));
 
+    cubit.selectTopic('Ecology');
+    expect(cubit.state.filteredArticles, isEmpty);
+
     cubit.close();
   });
 

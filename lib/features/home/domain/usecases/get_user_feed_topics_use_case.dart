@@ -3,13 +3,22 @@ import 'package:flutter/foundation.dart';
 import 'package:mind_feed/core/errors/failures.dart';
 import 'package:mind_feed/features/profile/domain/repos/profile_repo.dart';
 
+class FeedTopicRef {
+  final String? id;
+  final String? slug;
+
+  const FeedTopicRef({this.id, this.slug});
+}
+
 class UserFeedTopicsResult {
   final List<String> topics;
   final List<String> preferredCategoryIds;
+  final Map<String, FeedTopicRef> topicRefs;
 
   const UserFeedTopicsResult({
     required this.topics,
     required this.preferredCategoryIds,
+    this.topicRefs = const {},
   });
 }
 
@@ -39,6 +48,7 @@ class GetUserFeedTopicsUseCase {
   }) async {
     final preferredCategoryIds = <String>[];
     final dynamicTopics = <String>[];
+    final topicRefs = <String, FeedTopicRef>{};
     var remoteSucceeded = true;
 
     if (profileRepository != null && shouldQueryRemote) {
@@ -46,6 +56,7 @@ class GetUserFeedTopicsUseCase {
         userId ?? '',
         preferredCategoryIds,
         dynamicTopics,
+        topicRefs,
       );
     }
 
@@ -53,16 +64,26 @@ class GetUserFeedTopicsUseCase {
       _appendCachedTopics(cachedCategories, dynamicTopics);
     }
 
+    final needsMetadata = dynamicTopics.any((topic) {
+      final ref = topicRefs[topic.toLowerCase()];
+      return ref == null || ref.id == null || ref.slug == null;
+    });
+
     if (remoteSucceeded &&
-        preferredCategoryIds.isEmpty &&
         dynamicTopics.isNotEmpty &&
-        profileRepository != null) {
-      await _resolveCategoryIdsByName(dynamicTopics, preferredCategoryIds);
+        profileRepository != null &&
+        (preferredCategoryIds.isEmpty || needsMetadata)) {
+      await _resolveCategoryIdsByName(
+        dynamicTopics,
+        preferredCategoryIds,
+        topicRefs,
+      );
     }
 
     return UserFeedTopicsResult(
       topics: <String>['All', ...dynamicTopics],
       preferredCategoryIds: preferredCategoryIds,
+      topicRefs: Map<String, FeedTopicRef>.unmodifiable(topicRefs),
     );
   }
 
@@ -70,12 +91,13 @@ class GetUserFeedTopicsUseCase {
     String userId,
     List<String> preferredIds,
     List<String> dynamicTopics,
+    Map<String, FeedTopicRef> topicRefs,
   ) async {
     try {
       final result = await profileRepository!.getFavoriteCategories(userId);
       final isSuccess = result.when(
         success: (favs) {
-          _parseFavoriteMaps(favs, preferredIds, dynamicTopics);
+          _parseFavoriteMaps(favs, preferredIds, dynamicTopics, topicRefs);
           return true;
         },
         failure: (_) => false,
@@ -92,18 +114,30 @@ class GetUserFeedTopicsUseCase {
     List<Map<String, dynamic>> favs,
     List<String> preferredIds,
     List<String> dynamicTopics,
+    Map<String, FeedTopicRef> topicRefs,
   ) {
     for (final f in favs) {
-      final catId = f['category_id'] as String?;
+      final nested = f['categories'] as Map<String, dynamic>?;
+      final catId = (f['category_id'] as String?) ?? (nested?['id'] as String?);
       if (catId != null && catId.isNotEmpty && !preferredIds.contains(catId)) {
         preferredIds.add(catId);
       }
+      final slug = (f['slug'] as String?) ??
+          (f['category_slug'] as String?) ??
+          (nested?['slug'] as String?);
       final name = _extractCategoryName(f);
       if (name != null &&
           name.isNotEmpty &&
           name != 'All' &&
           !dynamicTopics.contains(name)) {
         dynamicTopics.add(name);
+        if ((catId != null && catId.isNotEmpty) ||
+            (slug != null && slug.trim().isNotEmpty)) {
+          topicRefs[name.toLowerCase()] = FeedTopicRef(
+            id: catId?.trim(),
+            slug: slug?.trim(),
+          );
+        }
       }
     }
   }
@@ -132,11 +166,17 @@ class GetUserFeedTopicsUseCase {
   Future<void> _resolveCategoryIdsByName(
     List<String> dynamicTopics,
     List<String> preferredIds,
+    Map<String, FeedTopicRef> topicRefs,
   ) async {
     try {
       final catResult = await profileRepository!.getCategories();
       catResult.when(
-        success: (allCats) => _matchCategoryIds(allCats, dynamicTopics, preferredIds),
+        success: (allCats) => _matchCategoryIds(
+          allCats,
+          dynamicTopics,
+          preferredIds,
+          topicRefs,
+        ),
         failure: (_) {},
       );
     } catch (_) {
@@ -149,16 +189,18 @@ class GetUserFeedTopicsUseCase {
     List<Map<String, dynamic>> allCats,
     List<String> dynamicTopics,
     List<String> preferredIds,
+    Map<String, FeedTopicRef> topicRefs,
   ) {
     final lowerFavs = dynamicTopics.map((e) => e.toLowerCase()).toSet();
     for (final c in allCats) {
       final name = (c['name'] as String?)?.trim();
-      final id = c['id'] as String?;
-      if (name != null &&
-          id != null &&
-          lowerFavs.contains(name.toLowerCase()) &&
-          !preferredIds.contains(id)) {
-        preferredIds.add(id);
+      final id = (c['id'] as String?)?.trim();
+      final slug = (c['slug'] as String?)?.trim();
+      if (name != null && lowerFavs.contains(name.toLowerCase())) {
+        if (id != null && id.isNotEmpty && !preferredIds.contains(id)) {
+          preferredIds.add(id);
+        }
+        topicRefs[name.toLowerCase()] = FeedTopicRef(id: id, slug: slug);
       }
     }
   }
